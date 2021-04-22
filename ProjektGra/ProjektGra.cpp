@@ -16,7 +16,7 @@ using namespace std;
 
 
 class BoardCreate {
-public :
+public:
         vector<vector<int>> InitBoard(){
             vector<int> row_top_bottom (20, 1);
             vector<int> row_middle(20, 0);
@@ -34,6 +34,8 @@ public :
             }
             board.push_back(row_top_bottom);
 
+            board[5][0] = 9;
+            board[5][19] = 9;
     
             return board;
         }
@@ -58,20 +60,120 @@ public :
         }
 };
 
-class BallMove {
+class BallMove : public BoardCreate{
+    int row_ball_pos;
+    int column_ball_pos;
+
+    int row_palet;
+
+    bool direction_LD;
+    bool direction_LU;
+    bool direction_RD;
+    bool direction_RU;
 public:
-    vector<vector<int>> move(vector<vector<int>> board_c, int position_row, int position_collumn, int first_round) {
+    int search_ball(vector<vector<int>> board_c) {
+
+        for (auto i = 0; i != board_c.size(); i++) {
+            for (auto j = 0; j != board_c[i].size(); j++) {
+                if (board_c[i][j] == 5){
+                    row_ball_pos = i;
+                    column_ball_pos = j;
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
+
+    int search_plate(vector<vector<int>> board_c) {
+        for (auto i = 0; i != board_c.size(); i++) {
+            if (board_c[i][0] == 9) {
+                row_palet = i;
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    int move(vector<vector<int>> &board_c, int first_round, int input) {
+        
+        search_ball(board_c);
 
         if (first_round == 1) {
-
-            board_c[position_collumn][position_row] = board_c[position_collumn - 1][position_row - 1];
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            direction_LD = 1;
+            direction_LU = 0;
+            direction_RD = 0;
+            direction_RU = 0;
 
         }
 
-        return board_c;
+        if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1){
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+        }
+        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {
+            direction_LD = 0;
+            direction_LU = 1;
+            direction_RD = 0;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
+            return 0;
+        }
+
+        if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] != 1) {
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
+        }
+        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 1) {
+            direction_LD = 1;
+            direction_LU = 0;
+            direction_RD = 0;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            return 0;
+        }
+
+
+
+        //to jeszcze nie dziala
+        if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] != 1) {
+            board_c[row_ball_pos][column_ball_pos] = board_c[row_ball_pos + 1][column_ball_pos + 1];
+        }
+
+        if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1) {
+            board_c[row_ball_pos][column_ball_pos] = board_c[row_ball_pos + 1][column_ball_pos - 1];
+        }
+
+        search_plate(board_c);
+
+
+        if (input == 119) {//up
+            board_c[row_palet][0] = 2;
+            board_c[row_palet - 1][0] = 9;
+        }
+        else if (input == 115) {//down
+            board_c[row_palet][0] = 2;
+            board_c[row_palet + 1][0] = 9;
+        }
     }
 
 
+};
+
+
+class Gameplay : public BoardCreate, public BallMove{
+public:
+    vector<vector<int>> one_round(vector<vector<int>> board_c) {
+
+        
+
+
+        return board_c;
+    }
 };
 
 int main()
@@ -86,11 +188,16 @@ int main()
 
     BC.ShowBoard(board_org);
 
-    for(int i = 0; i != -1; i++) {
+    int input = 0;
+
+    for (int i = 0; i != -1; i++) {
+        input = _getch();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         system("CLS");
+        BM.move(board_org, i, input);
         BC.ShowBoard(board_org);
     }
+    
     
 }
 

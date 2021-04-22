@@ -1,3 +1,6 @@
 ﻿  ProjektGra.cpp
-C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(80,14): warning C4101: "BM": lokalna zmienna, do której nie istnieje odwołanie
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(168,25): warning C4584: „Gameplay”: klasa bazowa „BoardCreate” jest już klasą bazową „BallMove”
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(18): message : zobacz deklarację „BoardCreate”
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(63): message : zobacz deklarację „BallMove”
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(162): warning C4715: "BallMove::move”: niewszystkie ścieżki kodu zwracają wartość
   ProjektGra.vcxproj -> C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\x64\Debug\ProjektGra.exe
