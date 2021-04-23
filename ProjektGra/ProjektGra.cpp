@@ -127,7 +127,7 @@ public:
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
         }
-        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 1) {
+        else if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] == 1) {
             direction_LD = 1;
             direction_LU = 0;
             direction_RD = 0;
@@ -137,21 +137,38 @@ public:
             return 0;
         }
 
-
-
-        //to jeszcze nie dziala
         if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] != 1) {
-            board_c[row_ball_pos][column_ball_pos] = board_c[row_ball_pos + 1][column_ball_pos + 1];
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
+        }
+        else if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 1) {
+            direction_LD = 0;
+            direction_LU = 0;
+            direction_RD = 0;
+            direction_RU = 1;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
+            return 0;
         }
 
         if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1) {
-            board_c[row_ball_pos][column_ball_pos] = board_c[row_ball_pos + 1][column_ball_pos - 1];
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+        }
+        else if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {
+            direction_LD = 0;
+            direction_LU = 0;
+            direction_RD = 1;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
+            return 0;
         }
 
         search_plate(board_c);
 
 
-        if (input == 119) {//up
+        if (input == 119 && row_palet != 0) {//up
             board_c[row_palet][0] = 2;
             board_c[row_palet - 1][0] = 9;
         }
