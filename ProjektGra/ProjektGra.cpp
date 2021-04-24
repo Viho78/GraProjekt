@@ -117,15 +117,25 @@ public:
         return 0;
     }
 
-    int move(vector<vector<int>> &board_c, int first_round, int input) {
+    int move(vector<vector<int>> &board_c, int first_round) {
         
         search_ball(board_c);
 
-        if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1){
+        if (direction_LD == 1 && board_c[row_ball_pos - 1][column_ball_pos + 1] == 9) {//palete collision
+            direction_LD = 0;
+            direction_LU = 0;
+            direction_RD = 1;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
+            return 0;
+        }
+        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1){//regular move
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            return 0;
         }
-        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {
+        else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {//top/bot wall collision
             direction_LD = 0;
             direction_LU = 1;
             direction_RD = 0;
@@ -135,9 +145,19 @@ public:
             return 0;
         }
 
-        if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] != 1) {
+        if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] == 9) {
+            direction_LD = 0;
+            direction_LU = 0;
+            direction_RD = 0;
+            direction_RU = 1;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
+            return 0;
+        }
+        else if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] != 1) {
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
+            return 0;
         }
         else if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] == 1) {
             direction_LD = 1;
@@ -149,9 +169,19 @@ public:
             return 0;
         }
 
-        if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] != 1) {
+        if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 9) {
+            direction_LD = 1;
+            direction_LU = 0;
+            direction_RD = 0;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
+            return 0;
+        }
+        else if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] != 1) {
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
+            return 0;
         }
         else if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 1) {
             direction_LD = 0;
@@ -163,9 +193,19 @@ public:
             return 0;
         }
 
+        if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 9) {
+            direction_LD = 0;
+            direction_LU = 1;
+            direction_RD = 0;
+            direction_RU = 0;
+            board_c[row_ball_pos][column_ball_pos] = 0;
+            board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
+            return 0;
+        }
         if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1) {
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            return 0;
         }
         else if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {
             direction_LD = 0;
@@ -176,10 +216,12 @@ public:
             board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
             return 0;
         }
+    }
+
+    void palet_move(vector<vector<int>>& board_c, int input) {
 
         search_plate(board_c);
         search_palet_ai(board_c);
-
 
         if (input == 119 && row_palet != 1) {//up
             board_c[row_palet][0] = 2;
@@ -194,13 +236,31 @@ public:
             board_c[row_palet_ai][19] = 2;
             board_c[row_palet_ai - 1][19] = 9;
         }
-        else if (row_palet_ai != 8){//down ai
+        else if (row_palet_ai != 8) {//down ai
             board_c[row_palet_ai][19] = 2;
             board_c[row_palet_ai + 1][19] = 9;
         }
-
-
     }
+
+    void win_cond(vector<vector<int>>& board_c) {
+
+        for (auto i = 0; i != board_c.size(); i++) {
+            if (board_c[i][0] == 5) {
+                system("CLS");
+                cout << "wygral komputer";
+                exit(0);
+            }
+        }
+        for (auto i = 0; i != board_c.size(); i++) {
+            if (board_c[i][19] == 5) {
+                system("CLS");
+                cout << "wygral gracz";
+                exit(0);
+            }
+        }
+    }
+
+
 };
 
 
@@ -234,7 +294,9 @@ int main()
         input = _getch();
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         system("CLS");
-        BM.move(board_org, i, input);
+        BM.move(board_org, i);
+        BM.win_cond(board_org);
+        BM.palet_move(board_org, input);
         BC.ShowBoard(board_org);
     }
     

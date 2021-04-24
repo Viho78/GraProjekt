@@ -1,6 +1,6 @@
 ﻿  ProjektGra.cpp
-C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(207,25): warning C4584: „Gameplay”: klasa bazowa „BoardCreate” jest już klasą bazową „BallMove”
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(267,25): warning C4584: „Gameplay”: klasa bazowa „BoardCreate” jest już klasą bazową „BallMove”
 C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(18): message : zobacz deklarację „BoardCreate”
 C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(63): message : zobacz deklarację „BallMove”
-C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(203): warning C4715: "BallMove::move”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\ProjektGra\ProjektGra.cpp(219): warning C4715: "BallMove::move”: niewszystkie ścieżki kodu zwracają wartość
   ProjektGra.vcxproj -> C:\Users\HARDPC\Desktop\C++ Projekty\ProjektGraR\GraProjekt\x64\Debug\ProjektGra.exe
