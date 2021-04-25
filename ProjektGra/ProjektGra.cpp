@@ -72,6 +72,7 @@ class BallMove : public BoardCreate{
     bool direction_LU;
     bool direction_RD;
     bool direction_RU;
+
 public:
     BallMove(vector<vector<int>>& board_c) { //initialisation of ball movement
         search_ball(board_c);
@@ -117,17 +118,18 @@ public:
         return 0;
     }
 
-    int move(vector<vector<int>> &board_c, int first_round) {
+    int move(vector<vector<int>> &board_c, int &rest_palet) {
         
         search_ball(board_c);
 
-        if (direction_LD == 1 && board_c[row_ball_pos - 1][column_ball_pos + 1] == 9) {//palete collision
+        if (direction_LD == 1 && board_c[row_ball_pos - 1][column_ball_pos + 1] == 9 && rest_palet <= 0) {//palete collision
             direction_LD = 0;
             direction_LU = 0;
             direction_RD = 1;
             direction_RU = 0;
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos + 1][column_ball_pos + 1] = 5;
+            rest_palet == 2;
             return 0;
         }
         else if (direction_LD == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1){//regular move
@@ -145,13 +147,14 @@ public:
             return 0;
         }
 
-        if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] == 9) {
+        if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] == 9 && rest_palet <= 0) {
             direction_LD = 0;
             direction_LU = 0;
             direction_RD = 0;
             direction_RU = 1;
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
+            rest_palet == 2;
             return 0;
         }
         else if (direction_LU == 1 && board_c[row_ball_pos - 1][column_ball_pos - 1] != 1) {
@@ -166,16 +169,18 @@ public:
             direction_RU = 0;
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+
             return 0;
         }
 
-        if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 9) {
+        if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] == 9 && rest_palet <= 0) {
             direction_LD = 1;
             direction_LU = 0;
             direction_RD = 0;
             direction_RU = 0;
             board_c[row_ball_pos][column_ball_pos] = 0;
-            board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
+            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            rest_palet == 2;
             return 0;
         }
         else if (direction_RD == 1 && board_c[row_ball_pos + 1][column_ball_pos + 1] != 1) {
@@ -193,21 +198,22 @@ public:
             return 0;
         }
 
-        if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 9) {
+        if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 9 && rest_palet <= 0) {
             direction_LD = 0;
             direction_LU = 1;
             direction_RD = 0;
             direction_RU = 0;
             board_c[row_ball_pos][column_ball_pos] = 0;
             board_c[row_ball_pos - 1][column_ball_pos - 1] = 5;
+            rest_palet == 2;
             return 0;
         }
-        if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] != 1) {
+        if (direction_RU == 1 && board_c[row_ball_pos - 1][column_ball_pos + 1] != 1) {
             board_c[row_ball_pos][column_ball_pos] = 0;
-            board_c[row_ball_pos + 1][column_ball_pos - 1] = 5;
+            board_c[row_ball_pos - 1][column_ball_pos + 1] = 5;
             return 0;
         }
-        else if (direction_RU == 1 && board_c[row_ball_pos + 1][column_ball_pos - 1] == 1) {
+        else if (direction_RU == 1 && board_c[row_ball_pos - 1][column_ball_pos + 1] == 1) {
             direction_LD = 0;
             direction_LU = 0;
             direction_RD = 1;
@@ -218,10 +224,10 @@ public:
         }
     }
 
-    void palet_move(vector<vector<int>>& board_c, int input) {
+    void palet_move1(vector<vector<int>>& board_c, int input) {
 
         search_plate(board_c);
-        search_palet_ai(board_c);
+        //search_palet_ai(board_c);
 
         if (input == 119 && row_palet != 1) {//up
             board_c[row_palet][0] = 2;
@@ -232,29 +238,43 @@ public:
             board_c[row_palet + 1][0] = 9;
         }
 
-        if (row_ball_pos <= row_palet_ai && row_palet_ai != 1) {//up ai
+        //if (row_ball_pos <= row_palet_ai && row_palet_ai != 1) {//up ai
+            //board_c[row_palet_ai][19] = 2;
+            //board_c[row_palet_ai - 1][19] = 9;
+        //}
+        //else if (row_palet_ai != 8) {//down ai
+            //board_c[row_palet_ai][19] = 2;
+            //board_c[row_palet_ai + 1][19] = 9;
+        //}
+    }
+
+    void palet_move2(vector<vector<int>>& board_c, int input) {
+
+        //search_plate(board_c);
+        search_palet_ai(board_c);
+
+        if (input == 119 && row_palet_ai != 1) {//up
             board_c[row_palet_ai][19] = 2;
             board_c[row_palet_ai - 1][19] = 9;
         }
-        else if (row_palet_ai != 8) {//down ai
+        else if (input == 115 && row_palet_ai != 8) {//down
             board_c[row_palet_ai][19] = 2;
             board_c[row_palet_ai + 1][19] = 9;
         }
     }
-
     void win_cond(vector<vector<int>>& board_c) {
 
         for (auto i = 0; i != board_c.size(); i++) {
             if (board_c[i][0] == 5) {
                 system("CLS");
-                cout << "wygral komputer";
+                cout << "wygral gracz 2";
                 exit(0);
             }
         }
         for (auto i = 0; i != board_c.size(); i++) {
             if (board_c[i][19] == 5) {
                 system("CLS");
-                cout << "wygral gracz";
+                cout << "wygral gracz 1";
                 exit(0);
             }
         }
@@ -288,16 +308,30 @@ int main()
 
     BC.ShowBoard(board_org);
 
-    int input = 0;
+    int input1 = 0;
+    int input2 = 0;
+
+    int rest_pal = 0;
 
     for (int i = 0; i != -1; i++) {
-        input = _getch();
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        input1 = _getch();
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
         system("CLS");
-        BM.move(board_org, i);
+        BM.move(board_org, rest_pal);
         BM.win_cond(board_org);
-        BM.palet_move(board_org, input);
+        BM.palet_move1(board_org, input1);
         BC.ShowBoard(board_org);
+        
+
+        input2 = _getch();
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        system("CLS");
+        BM.move(board_org, rest_pal);
+        BM.win_cond(board_org);
+        BM.palet_move2(board_org, input2);
+        BC.ShowBoard(board_org);
+
+        rest_pal--;
     }
     
     
