@@ -7,6 +7,9 @@
 #include <conio.h>
 #include <thread>
 #include <chrono>
+#include <fstream>
+#include <ctime> 
+
 
 
 #define length 20
@@ -17,6 +20,16 @@ using namespace std;
 
 class BoardCreate {
 public:
+        ofstream log;
+
+        BoardCreate() {
+        log.open("logs.txt");
+        time_t result = time(NULL);
+        char str[26]; 
+        ctime_s(str, sizeof str, &result);
+        log << str << "Init of the title." << endl;
+        }
+
         vector<vector<int>> InitBoard(){
             vector<int> row_top_bottom (20, 1);
             vector<int> row_middle(20, 0);
@@ -25,7 +38,6 @@ public:
             row_middle[19] = 2;
 
             vector<vector<int>> board;
-
 
             int num = height;
             board.push_back(row_top_bottom);
@@ -36,6 +48,11 @@ public:
 
             board[5][0] = 9;
             board[5][19] = 9;
+
+            time_t result = time(NULL);
+            char str[26];
+            ctime_s(str, sizeof str, &result);
+            log << str << "Board created." << endl;
     
             return board;
         }
@@ -50,11 +67,21 @@ public:
                 }
                 cout << endl;
             }
+
+            time_t result = time(NULL);
+            char str[26];
+            ctime_s(str, sizeof str, &result);
+            log << str << "Board showed." << endl;
         }
 
         vector<vector<int>> start_round(vector<vector<int>> board_c) {
 
             board_c[5][10] = 5;
+
+            time_t result = time(NULL);
+            char str[26];
+            ctime_s(str, sizeof str, &result);
+            log << str << "Game began." << endl;
 
             return board_c;
         }
@@ -82,6 +109,11 @@ public:
         direction_LU = 0;
         direction_RD = 0;
         direction_RU = 0;
+
+        time_t result = time(NULL);
+        char str[26];
+        ctime_s(str, sizeof str, &result);
+        log << str << "Ball moved to " << row_ball_pos + 1 << " " << column_ball_pos - 1 << endl;
     }
 
     bool search_ball(vector<vector<int>> board_c) {
@@ -268,6 +300,11 @@ public:
             if (board_c[i][0] == 5) {
                 system("CLS");
                 cout << "wygral gracz 2";
+                time_t result = time(NULL);
+                char str[26];
+                ctime_s(str, sizeof str, &result);
+                log << str << "Player 2 won." << endl;
+                log << str << "Closing." << endl;
                 exit(0);
             }
         }
@@ -275,6 +312,11 @@ public:
             if (board_c[i][19] == 5) {
                 system("CLS");
                 cout << "wygral gracz 1";
+                time_t result = time(NULL);
+                char str[26];
+                ctime_s(str, sizeof str, &result);
+                log << str << "Player 1 won." << endl;
+                log << str << "Closing." << endl;
                 exit(0);
             }
         }
@@ -283,22 +325,12 @@ public:
 
 };
 
-
-class Gameplay : public BoardCreate, public BallMove{
-public:
-    vector<vector<int>> one_round(vector<vector<int>> board_c) {
-
-        
-
-
-        return board_c;
-    }
-};
-
 int main()
 {
     vector<vector<int>> board_org;
     BoardCreate BC;
+
+    
 
     board_org = BC.InitBoard();
 
@@ -313,7 +345,7 @@ int main()
 
     int rest_pal = 0;
 
-    for (int i = 0; i != -1; i++) {
+    while(true) {
         input1 = _getch();
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
         system("CLS");
@@ -332,9 +364,7 @@ int main()
         BC.ShowBoard(board_org);
 
         rest_pal--;
-    }
-    
-    
+    } 
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
