@@ -1,2 +1,2 @@
 # GraProjekt
- show off game
+Pong Game
